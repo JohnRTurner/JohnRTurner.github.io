@@ -26,8 +26,8 @@ export class SearchComponent implements OnInit {
   search() {
     if(this.searchString.length > 0){
       this.resultString = "Searching...";
-      this.singlestore.queryTupple({sql: "select o_comment from orders where match(o_comment) against (?) limit 1000",
-                                               args: [this.searchString], database: 'fulltext_db'}).subscribe((response:SinglestoreTuppleResponse) => {
+      this.singlestore.queryTupple({sql: "select o_comment, match(o_comment) against (?) as relevancy from orders where match(o_comment) against (?) limit 1000",
+                                               args: [this.searchString,this.searchString], database: 'fulltext_db'}).subscribe((response:SinglestoreTuppleResponse) => {
         this.resultString = "";
         response.results.forEach((result) =>{
           result.rows.forEach( (row) => {
@@ -82,8 +82,8 @@ export class SearchComponent implements OnInit {
   highlite() {
     if(this.searchString.length > 0){
       this.resultString = "Searching...";
-      this.singlestore.queryTupple({sql: "select HIGHLIGHT(o_comment) against (?) from orders where match(o_comment) against (?) limit 1000",
-        args: [this.searchString,this.searchString], database: 'fulltext_db'}).subscribe((response:SinglestoreTuppleResponse) => {
+      this.singlestore.queryTupple({sql: "select HIGHLIGHT(o_comment) against (?), match(o_comment) against (?) as relevancy from orders where match(o_comment) against (?) limit 1000",
+        args: [this.searchString,this.searchString,this.searchString], database: 'fulltext_db'}).subscribe((response:SinglestoreTuppleResponse) => {
         this.resultString = "";
         response.results.forEach((result) =>{
           result.rows.forEach( (row) => {
