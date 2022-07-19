@@ -7,11 +7,13 @@ import {AppRoutingModule} from "./app-routing.module";
 import {FlexLayoutModule} from "@angular/flex-layout";
 import { SetupComponent } from './setup/setup.component';
 import {FormsModule} from "@angular/forms";
+import { AboutComponent } from './about/about.component';
 @NgModule({
   declarations: [
     AppComponent,
     SearchComponent,
-    SetupComponent
+    SetupComponent,
+    AboutComponent
   ],
   imports: [
     AppRoutingModule,

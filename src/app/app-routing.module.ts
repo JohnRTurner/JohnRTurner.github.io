@@ -1,10 +1,12 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {SearchComponent} from "./search/search.component";
 import {SetupComponent} from "./setup/setup.component";
+import {AboutComponent} from "./about/about.component";
 
 const routes: Routes = [
-  { path: '', redirectTo: 'search', pathMatch: 'full'},
+  { path: '', redirectTo: 'about', pathMatch: 'full'},
+  { path: 'about', component: AboutComponent},
   { path: 'search', component: SearchComponent},
   { path: 'setup', component: SetupComponent},
 ];
@@ -13,4 +15,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule { }

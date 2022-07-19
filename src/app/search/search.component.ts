@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {SinglestoreService} from "../singlestore/singlestore.service";
 import {SinglestoreTuppleResponse} from "../singlestore/singlestore-tupple-response";
+import {QueryInfoService} from "../singlestore/query-info.service";
 
 @Component({
   selector: 'app-search',
@@ -11,7 +12,7 @@ export class SearchComponent implements OnInit {
   searchString: string = "";
   resultString: string = "";
 
-  constructor(private singlestore: SinglestoreService) { }
+  constructor(private singlestore: SinglestoreService, private queryInfo: QueryInfoService) { }
 
   ngOnInit(): void {
   }
@@ -26,8 +27,10 @@ export class SearchComponent implements OnInit {
   search() {
     if(this.searchString.length > 0){
       this.resultString = "Searching...";
-      this.singlestore.queryTupple({sql: "select o_comment, match(o_comment) against (?) as relevancy from orders where match(o_comment) against (?) limit 1000",
-                                               args: [this.searchString,this.searchString], database: 'fulltext_db'}).subscribe((response:SinglestoreTuppleResponse) => {
+      this.singlestore.queryTupple({sql: this.queryInfo.getSearchStr(),
+                                               args: [this.searchString,this.searchString],
+                                               database: this.queryInfo.getDatabase()}
+                                  ).subscribe((response:SinglestoreTuppleResponse) => {
         this.resultString = "";
         response.results.forEach((result) =>{
           result.rows.forEach( (row) => {
@@ -54,8 +57,10 @@ export class SearchComponent implements OnInit {
   searchLike() {
     if(this.searchString.length > 0){
       this.resultString = "Searching...";
-      this.singlestore.queryTupple({sql: "select o_comment from orders where o_comment like (?) limit 1000",
-        args: [this.searchString], database: 'fulltext_db'}).subscribe((response:SinglestoreTuppleResponse) => {
+      this.singlestore.queryTupple({sql: this.queryInfo.getLikeStr(),
+                                                args: [this.searchString],
+                                                database: this.queryInfo.getDatabase()
+                                               }).subscribe((response:SinglestoreTuppleResponse) => {
         this.resultString = "";
         response.results.forEach((result) =>{
           result.rows.forEach( (row) => {
@@ -78,12 +83,13 @@ export class SearchComponent implements OnInit {
       this.resultString = "";
     }
   }
-
-  highlite() {
+  highlight() {
     if(this.searchString.length > 0){
       this.resultString = "Searching...";
-      this.singlestore.queryTupple({sql: "select HIGHLIGHT(o_comment) against (?), match(o_comment) against (?) as relevancy from orders where match(o_comment) against (?) limit 1000",
-        args: [this.searchString,this.searchString,this.searchString], database: 'fulltext_db'}).subscribe((response:SinglestoreTuppleResponse) => {
+      this.singlestore.queryTupple({sql: this.queryInfo.getHighlightStr(),
+                                                args: [this.searchString,this.searchString,this.searchString],
+                                                database: this.queryInfo.getDatabase()
+                                               }).subscribe((response:SinglestoreTuppleResponse) => {
         this.resultString = "";
         response.results.forEach((result) =>{
           result.rows.forEach( (row) => {
