@@ -17,6 +17,10 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2020",
+    "types": ["node","jest"],
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "module": "es2020",
     "lib": [
       "es2020",

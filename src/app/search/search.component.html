@@ -1,0 +1,33 @@
+<div class="list row" style="width: auto;margin: 10px; height: 100%; overflow-y: hidden; margin-bottom: 10px;">
+  <h4 class="text-center">Search</h4>
+  <div class="submit-form">
+    <div class="form-group form-inline row">
+      <!-- <label for="searchString" class = "col-form-label col-sm-2">Search String</label> -->
+      <div class="col-sm-8">
+        <input
+          type="text"
+          class="form-control"
+          id="searchString"
+          required
+          [(ngModel)]="searchString"
+          (keyup.enter)="search()"
+          name="searchString"
+          placeholder="What would you like to search for?"
+        />
+      </div>
+      <div class="col-sm-4">
+        <div class="float-end">
+          <button (click)="search()" class="btn btn-primary ">Match</button> &nbsp;
+          <button (click)="highlite()" class="btn btn-primary">Highlite</button> &nbsp;
+          <button (click)="searchLike()" class="btn btn-primary">Like</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div [innerHtml]="resultString" class="row border-secondary border" style="width: 98%;margin: 10px; height: 70%; overflow-y: auto; margin-bottom: 10px;">
+  </div>
+</div>
+<!--
++"special requests" +"bold pinto" +"haggle silent"
+%haggle silent%special requests%bold pinto%
+-->
