@@ -1,1 +1,82 @@
-<p>about works!</p>
+<div style="padding: 10px; overflow: auto; height: 100%">
+  <h4 class="text-center">About</h4><br>
+  <h5>Steps to Execute the Full Text Search Demo</h5>
+  <table class="table table-striped table-bordered table-primary">
+    <thead>
+    <tr>
+      <th>Step</th>
+      <th>Detail</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>Create SingleStore Database</td>
+      <td>Suggest using managed service trial license.</td>
+    </tr>
+    <tr>
+      <td>Create table</td>
+      <td>Execute <code>CREATE TABLE `orders` (
+        `o_orderkey` bigint(11) NOT NULL,
+        `o_custkey` int(11) NOT NULL,
+        `o_orderstatus` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+        `o_totalprice` decimal(15,2) NOT NULL,
+        `o_orderdate` date NOT NULL,
+        `o_orderpriority` char(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+        `o_clerk` char(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+        `o_shippriority` int(11) NOT NULL,
+        `o_comment` varchar(79) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+        SHARD KEY (`o_orderkey`) USING CLUSTERED COLUMNSTORE,
+        unique key(o_orderkey) using hash,
+        fulltext(o_comment)
+        );</code></td>
+    </tr>
+    <tr>
+      <td>Create pipeline</td>
+      <td>Execute <code>CREATE OR REPLACE PIPELINE tpch_100_orders
+        AS LOAD DATA S3 'memsql-tpch-dataset/sf_100/orders/'
+        config '{{ '{' }}"region":"us-east-1"{{ '}' }}'
+        SKIP DUPLICATE KEY ERRORS
+        INTO TABLE orders
+        FIELDS TERMINATED BY '|'
+        LINES TERMINATED BY '|\n';</code></td>
+    </tr>
+    <tr>
+      <td>Start Pipeline</td>
+      <td>Execute <code>start pipeline tpch_100_orders;</code> then let it load.</td>
+    </tr>
+    <tr>
+      <td>Setup</td>
+      <td>Go to Setup tab, fill in configuration to the database, test and save.</td>
+    </tr>
+    <tr>
+      <td>Search</td>
+      <td>Go to Search tab and try various searches.<br>Compare full text search <code>+"special requests" +"bold pinto" +"haggle silent"</code>
+        vs like clause <code>%haggle silent%special requests%bold pinto%</code></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <h5>SingleStore Documentation</h5>
+  <ul class = "list-group">
+    <li class="list-group-item list-group-item-dark">
+      <a href = "https://docs.singlestore.com/managed-service/en/reference/sql-reference/full-text-search-functions/match.html" target="_blank">Full Text Search Reference</a>
+      for information on seting up and using full text searching.
+    </li>
+    <li class="list-group-item list-group-item-light">
+      <a href = "https://www.singlestore.com/blog/full-text-search-in-memsql/" target="_blank">Full Text Search Blog</a>&nbsp;
+      for overview of full text searching.
+    </li>
+    <li class="list-group-item list-group-item-dark">
+      <a href="https://docs.singlestore.com/managed-service/en/reference/data-api.html" target="_blank">Data API Reference</a>
+      for information on setting up and using the data API (rest API)
+    </li>
+    <li class="list-group-item list-group-item-light">
+      <a href = "https://github.com/JohnRTurner/JohnRTurner.github.io" target="_blank">Source Code</a>&nbsp;
+      Code used to create this demo.
+    </li>
+    <li class="list-group-item list-group-item-dark">
+      <a href="https://johnrturner.github.io" target="_blank">This Demo</a>
+      Demo running via the github
+    </li>
+  </ul>
+</div>

@@ -1,6 +1,6 @@
-<div class="list row" style="width: auto;margin: 10px; height: 100%; overflow-y: hidden; margin-bottom: 10px;">
-  <h4 class="text-center">Search</h4>
-  <div class="submit-form">
+<div style="padding: 10px">
+  <h4 class="text-center">Search</h4><br>
+  <div class="submit-form ">
     <div class="form-group form-inline row">
       <!-- <label for="searchString" class = "col-form-label col-sm-2">Search String</label> -->
       <div class="col-sm-8">
@@ -24,7 +24,23 @@
       </div>
     </div>
   </div>
-  <div [innerHtml]="resultString" class="row border-secondary border" style="width: 98%;margin: 10px; height: 70%; overflow-y: auto; margin-bottom: 10px;">
+  <div *ngIf="tablerows.length === 0" [innerHtml]="resultString" class="row border-secondary border" style="width: 98%;margin: 10px; height: 70vh; overflow-y: auto; margin-bottom: 10px;">
+  </div>
+  <div *ngIf="tablerows.length > 0" class="row border-secondary border table-responsive" style="width: 98vw;margin: 10px; height: 70vh; overflow-y: auto; margin-bottom: 10px;">
+    <table class="table table-striped table-bordered table-primary">
+      <thead>
+        <tr>
+          <th *ngFor="let cl of tablecols">{{cl}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let rw of tablerows">
+           <td *ngFor="let cell of rw">
+             {{pretty(cell)}}
+           </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 <!--

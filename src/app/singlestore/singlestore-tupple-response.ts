@@ -4,7 +4,7 @@ export interface SinglestoreTuppleResponse {
       name: string;
       dataType: string;
       nullable: boolean;
-    }
+    }[]
     rows: string[][]
   }[]
   error: {

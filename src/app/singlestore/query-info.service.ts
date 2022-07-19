@@ -43,11 +43,11 @@ export class QueryInfoService {
     return this.highlightStr;
   }
   private update(){
-    this.searchStr = 'select ' + this.columnName + ', match(' + this.columnName + ') against (?) as relevancy from ' +
-      this.tableName + ' where match(' + this.columnName + ') against (?) limit 1000';
+    this.searchStr = 'select ' + this.columnName + ', match(' + this.columnName + ') against (?) as Relevancy from ' +
+      this.tableName + ' where match(' + this.columnName + ') against (?) order by 2 desc limit 1000';
     this.likeStr = 'select ' + this.columnName + ' from ' + this.tableName +
       ' where ' + this.columnName + ' like (?) limit 1000';
-    this.highlightStr = 'select HIGHLIGHT(' + this.columnName + ') against (?), match(' + this.columnName +
-      ') against (?) as relevancy from ' + this.tableName + ' where match(' + this.columnName + ') against (?) limit 1000';
+    this.highlightStr = 'select HIGHLIGHT(' + this.columnName + ') against (?) as Highlight, match(' + this.columnName +
+      ') against (?) as Relevancy from ' + this.tableName + ' where match(' + this.columnName + ') against (?) order by 2 desc limit 1000';
   }
 }

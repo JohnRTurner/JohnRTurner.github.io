@@ -11,6 +11,8 @@ import {QueryInfoService} from "../singlestore/query-info.service";
 export class SearchComponent implements OnInit {
   searchString: string = "";
   resultString: string = "";
+  tablecols: string[] = [];
+  tablerows: string[][] = [];
 
   constructor(private singlestore: SinglestoreService, private queryInfo: QueryInfoService) { }
 
@@ -27,25 +29,12 @@ export class SearchComponent implements OnInit {
   search() {
     if(this.searchString.length > 0){
       this.resultString = "Searching...";
+      this.tablerows = [];
       this.singlestore.queryTupple({sql: this.queryInfo.getSearchStr(),
                                                args: [this.searchString,this.searchString],
                                                database: this.queryInfo.getDatabase()}
                                   ).subscribe((response:SinglestoreTuppleResponse) => {
-        this.resultString = "";
-        response.results.forEach((result) =>{
-          result.rows.forEach( (row) => {
-            row.forEach((col) => {
-              if(typeof col === "string")
-                this.resultString = this.resultString.concat(col, "<br\>");
-              else
-                this.resultString = this.resultString.concat(JSON.stringify(col), "<br\>");
-            })
-            this.resultString = this.resultString.concat("<br\>");
-          })
-        });
-        if(this.resultString.length < 1){
-          this.resultString = "No results found."
-        }
+        this.parseData(response);
       },error => {
         this.resultString = error.error;
       });
@@ -57,25 +46,12 @@ export class SearchComponent implements OnInit {
   searchLike() {
     if(this.searchString.length > 0){
       this.resultString = "Searching...";
+      this.tablerows = [];
       this.singlestore.queryTupple({sql: this.queryInfo.getLikeStr(),
                                                 args: [this.searchString],
                                                 database: this.queryInfo.getDatabase()
                                                }).subscribe((response:SinglestoreTuppleResponse) => {
-        this.resultString = "";
-        response.results.forEach((result) =>{
-          result.rows.forEach( (row) => {
-            row.forEach((col) => {
-              if(typeof col === "string")
-                this.resultString = this.resultString.concat(col, "<br\>");
-              else
-                this.resultString = this.resultString.concat(JSON.stringify(col), "<br\>");
-            })
-            this.resultString = this.resultString.concat("<br\>");
-          })
-        });
-        if(this.resultString.length < 1){
-          this.resultString = "No results found."
-        }
+        this.parseData(response);
       },error => {
         this.resultString = error.error;
       });
@@ -83,33 +59,47 @@ export class SearchComponent implements OnInit {
       this.resultString = "";
     }
   }
+
   highlight() {
     if(this.searchString.length > 0){
       this.resultString = "Searching...";
+      this.tablerows = [];
       this.singlestore.queryTupple({sql: this.queryInfo.getHighlightStr(),
                                                 args: [this.searchString,this.searchString,this.searchString],
                                                 database: this.queryInfo.getDatabase()
                                                }).subscribe((response:SinglestoreTuppleResponse) => {
-        this.resultString = "";
-        response.results.forEach((result) =>{
-          result.rows.forEach( (row) => {
-            row.forEach((col) => {
-              if(typeof col === "string")
-                this.resultString = this.resultString.concat(col, "<br\>");
-              else
-                this.resultString = this.resultString.concat(JSON.stringify(col), "<br\>");
-            })
-            this.resultString = this.resultString.concat("<hr\>");
-          })
-        });
-        if(this.resultString.length < 1){
-          this.resultString = "No results found."
-        }
+        this.parseData(response);
       },error => {
         this.resultString = error.error;
       });
     } else {
       this.resultString = "";
     }
+  }
+
+  parseData(response:SinglestoreTuppleResponse){
+    this.resultString = "";
+    response.results.forEach((result) =>{
+      this.tablecols = [];
+      result.columns.forEach((col) =>{
+        this.tablecols.push(col.name);
+      });
+      this.tablerows = [];
+      result.rows.forEach( (row) => {
+        this.tablerows.push(row);
+      });
+    });
+
+    if(this.tablerows.length < 1){
+      this.resultString = "No results found."
+    }
+
+  }
+
+  pretty(cel: any) {
+    if(typeof cel !== "string"){
+      return JSON.stringify(cel);
+    }
+    return cel
   }
 }
