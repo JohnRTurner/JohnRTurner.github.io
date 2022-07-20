@@ -23,27 +23,22 @@
         </div>
       </div>
     </div>
+  </div> <br>
+  <div *ngIf="tablerows.length === 0" [innerHtml]="resultString" class="row border-secondary border" style="width: 98vw;margin: 2px;height: 70vh; overflow-y: auto;">
   </div>
-  <div *ngIf="tablerows.length === 0" [innerHtml]="resultString" class="row border-secondary border" style="width: 98%;margin: 10px; height: 70vh; overflow-y: auto; margin-bottom: 10px;">
-  </div>
-  <div *ngIf="tablerows.length > 0" class="row border-secondary border table-responsive" style="width: 98vw;margin: 10px; height: 70vh; overflow-y: auto; margin-bottom: 10px;">
+  <div *ngIf="tablerows.length > 0" class="row border-secondary border table-responsive" style="width: 98vw;margin: 2px;height: 70vh; overflow-y: auto;">
     <table class="table table-striped table-bordered table-primary">
       <thead>
         <tr>
-          <th *ngFor="let cl of tablecols">{{cl}}</th>
+          <th *ngFor="let cl of tablecols" [innerHtml]="cl"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let rw of tablerows">
-           <td *ngFor="let cell of rw">
-             {{pretty(cell)}}
-           </td>
+           <td *ngFor="let cell of rw" [innerHtml]="pretty(cell)"></td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
-<!--
-+"special requests" +"bold pinto" +"haggle silent"
-%haggle silent%special requests%bold pinto%
--->
+

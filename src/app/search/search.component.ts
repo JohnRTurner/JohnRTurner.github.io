@@ -96,10 +96,11 @@ export class SearchComponent implements OnInit {
 
   }
 
-  pretty(cel: any) {
-    if(typeof cel !== "string"){
-      return JSON.stringify(cel);
+  pretty(data: any) {
+    if(typeof data === "object"){
+      return JSON.stringify(data);
     }
-    return cel
+    return data;
   }
 }
+
