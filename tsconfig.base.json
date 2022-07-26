@@ -1,8 +1,7 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -17,7 +16,10 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2020",
-    "types": ["node","jest"],
+    "types": [
+      "node",
+      "jest"
+    ],
     "typeRoots": [
       "node_modules/@types"
     ],
@@ -25,12 +27,18 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "paths": {},
+    "rootDir": "."
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

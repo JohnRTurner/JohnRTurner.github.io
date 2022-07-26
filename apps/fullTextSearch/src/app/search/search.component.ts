@@ -36,7 +36,14 @@ export class SearchComponent implements OnInit {
                                   ).subscribe((response:SinglestoreTuppleResponse) => {
         this.parseData(response);
       },error => {
-        this.resultString = error.error;
+        if(typeof error.error === "string"){
+          this.resultString = error.error;
+        } else if(typeof error.message ==="string") {
+          this.resultString = error.message;
+        } else{
+          this.resultString = "Undefined error!!! Check browser console for more information.";
+          console.log(error);
+        }
       });
     } else {
       this.resultString = "";
@@ -53,7 +60,14 @@ export class SearchComponent implements OnInit {
                                                }).subscribe((response:SinglestoreTuppleResponse) => {
         this.parseData(response);
       },error => {
-        this.resultString = error.error;
+        if(typeof error.error === "string"){
+          this.resultString = error.error;
+        } else if(typeof error.message ==="string") {
+          this.resultString = error.message;
+        } else{
+          this.resultString = "Undefined error!!! Check browser console for more information.";
+          console.log(error);
+        }
       });
     } else {
       this.resultString = "";
@@ -70,7 +84,14 @@ export class SearchComponent implements OnInit {
                                                }).subscribe((response:SinglestoreTuppleResponse) => {
         this.parseData(response);
       },error => {
-        this.resultString = error.error;
+        if(typeof error.error === "string"){
+          this.resultString = error.error;
+        } else if(typeof error.message ==="string") {
+          this.resultString = error.message;
+        } else{
+          this.resultString = "Undefined error!!! Check browser console for more information.";
+          console.log(error);
+        }
       });
     } else {
       this.resultString = "";

@@ -1,6 +1,6 @@
 export interface SinglestoreQueryResponse {
   results: {
-    rows: JSON []
+    rows: object []
   }[]
   error: {
     code: number;

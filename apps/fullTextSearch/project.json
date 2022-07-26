@@ -1,0 +1,96 @@
+{
+  "projectType": "application",
+  "generators": {},
+  "sourceRoot": "apps/fullTextSearch/src",
+  "prefix": "app",
+  "targets": {
+    "build": {
+      "executor": "@angular-devkit/build-angular:browser",
+      "options": {
+        "outputPath": "docs",
+        "index": "apps/fullTextSearch/src/index.html",
+        "main": "apps/fullTextSearch/src/main.ts",
+        "polyfills": "apps/fullTextSearch/src/polyfills.ts",
+        "tsConfig": "apps/fullTextSearch/tsconfig.app.json",
+        "assets": [
+          "apps/fullTextSearch/src/favicon.ico",
+          "apps/fullTextSearch/src/assets"
+        ],
+        "styles": [
+          "./node_modules/bootstrap/dist/css/bootstrap.css",
+          "apps/fullTextSearch/src/styles.css"
+        ],
+        "scripts": [
+          "node_modules/bootstrap/dist/js/bootstrap.min.js"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "750kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "fileReplacements": [
+            {
+              "replace": "apps/fullTextSearch/src/environments/environment.ts",
+              "with": "apps/fullTextSearch/src/environments/environment.prod.ts"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@angular-devkit/build-angular:dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "fullTextSearch:build:production"
+        },
+        "development": {
+          "browserTarget": "fullTextSearch:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "fullTextSearch:build"
+      }
+    },
+    "test": {
+      "executor": "@angular-devkit/build-angular:karma",
+      "options": {
+        "main": "apps/fullTextSearch/src/test.ts",
+        "polyfills": "apps/fullTextSearch/src/polyfills.ts",
+        "tsConfig": "apps/fullTextSearch/tsconfig.spec.json",
+        "karmaConfig": "apps/fullTextSearch/karma.conf.js",
+        "assets": [
+          "apps/fullTextSearch/src/favicon.ico",
+          "apps/fullTextSearch/src/assets"
+        ],
+        "styles": [
+          "apps/fullTextSearch/src/styles.css"
+        ],
+        "scripts": []
+      }
+    }
+  }
+}
