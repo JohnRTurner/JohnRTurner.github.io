@@ -18,9 +18,9 @@ export class SetupComponent implements OnInit, OnDestroy {
   columnName: any;
   resultString: string = '';
   connected:boolean = false;
-  tschema: tst_schema|undefined = undefined;
+  tschema : any|undefined;
   updatable: boolean=true;
-  progress: number|undefined;
+  batchprog: any|undefined;
 
   constructor( private conInfo: ConnectInfoService, private queryInfo: QueryInfoService, private singlestore: SinglestoreService) {
   }
@@ -34,12 +34,14 @@ export class SetupComponent implements OnInit, OnDestroy {
     this.columnName = this.queryInfo.getColumn();
     this.connected = false;
     this.tschema = undefined;
-    this.progress = undefined;
+    this.batchprog = undefined;
     this.updatable = true;
   }
 
   ngOnDestroy(): void {
-    this.progress = -1;
+    if(this.batchprog) {
+      this.batchprog.progress = -1;
+    }
   }
 
   testAndSave() {
@@ -53,7 +55,7 @@ export class SetupComponent implements OnInit, OnDestroy {
     oQueryInfo.setColumn(this.columnName);
     this.resultString = 'Testing...'
     this.tschema = undefined;
-    this.progress = undefined;
+    this.batchprog = undefined;
     this.connected = false;
     this.singlestore.pingTest(oConInfo).subscribe((response: SinglestoreQueryResponse) => {
       this.connected = true;
@@ -67,11 +69,9 @@ export class SetupComponent implements OnInit, OnDestroy {
       if(res && res.rows){
         let row = res.rows.pop();
         if(row){
-          //let fld = Object.values(row)[0];
-          let fld = Object.values(row)[Object.keys(row).findIndex((element) => element === 'pong')];
-          if(fld) {
+          if(row.pong) {
             this.resultString = "Connection successful and settings are saved.";
-            console.log("Ping Response:" + fld + " Saved: true")
+            console.log("Ping Response:" + row.pong + " Saved: true")
             this.check_schema();
           }
         }
@@ -91,7 +91,7 @@ export class SetupComponent implements OnInit, OnDestroy {
 
   private check_schema() {
     this.tschema = undefined;
-    this.progress = undefined;
+    this.batchprog = undefined;
     this.singlestore.query({args: [this.database, this. tableName, this.columnName], sql: "with t as (select ? tschema, ? ttab, ? tcol) " +
         "select d.database_name as db, t2.table_name as tbl, c.column_name as col " +
         "from t left outer join information_schema.DISTRIBUTED_DATABASES d on (d.database_name = tschema) " +
@@ -101,15 +101,10 @@ export class SetupComponent implements OnInit, OnDestroy {
       if(res && res.rows){
         let row = res.rows.pop();
         if(row){
-          //let fld = Object.values(row)[0];
-          let db = Object.values(row)[Object.keys(row).findIndex((element) => element === 'db')];
-          let tbl = Object.values(row)[Object.keys(row).findIndex((element) => element === 'tbl')];
-          let col = Object.values(row)[Object.keys(row).findIndex((element) => element === 'col')];
-          // this.resultString = this.resultString + " database: " + db + " table: " + tbl + " column: " + col;
-          this.tschema = {database_name:(db == null)?'Not Found':db,
-            table_name:(tbl == null)?'Not Found':tbl,
-            column_name:(col == null)?'Not Found':col };
-          if(col !== null){
+          this.tschema = {database_name:(row.db == null)?'Not Found':row.db,
+            table_name:(row.tbl == null)?'Not Found':row.tbl,
+            column_name:(row.col == null)?'Not Found':row.col };
+          if(row.col !== null){
             this.pipelineStatus();
           }
         }
@@ -260,21 +255,22 @@ export class SetupComponent implements OnInit, OnDestroy {
         "       round((time_to_sec(current_timestamp) - max(time_to_sec(start_time) + batch_time)) + 1) secondssinceupdate\n" +
         "from information_schema.PIPELINES_BATCHES_SUMMARY " +
         "where database_name = ? and pipeline_name = 'tpch_100_orders' and batch_state in ('Succeeded', 'In Progress') and num_partitions > 0"}).subscribe((response:SinglestoreQueryResponse) => {
-      if(this.progress && this.progress < 0){
+      if(this.batchprog && this.batchprog.progress && this.batchprog.progress < 0){
         return;
       }
       let res = response.results.pop();
       if(res && res.rows){
         let row = res.rows.pop();
         if(row) {
-          //let fld = Object.values(row)[0];
+          /*
           let progress = Object.values(row)[Object.keys(row).findIndex((element) => element === 'progress')];
           let seconds = Object.values(row)[Object.keys(row).findIndex((element) => element === 'seconds')];
           let tblrows = Object.values(row)[Object.keys(row).findIndex((element) => element === 'rows')];
           let rowspersecond = Object.values(row)[Object.keys(row).findIndex((element) => element === 'rowspersecond')];
           let secondssinceupdate = Object.values(row)[Object.keys(row).findIndex((element) => element === 'secondssinceupdate')];
-          this.progress = progress;
-          if (progress && progress < 100) {
+           */
+          this.batchprog = row;
+          if (this.batchprog.progress && this.batchprog.progress < 100) {
             this.pipelineStatusLoop();
           }
         }
@@ -309,8 +305,3 @@ export class SetupComponent implements OnInit, OnDestroy {
 
 }
 
-interface tst_schema {
-  database_name: string
-  table_name: string
-  column_name: string
-}

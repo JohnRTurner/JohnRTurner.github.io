@@ -1,9 +1,7 @@
 <div style="padding: 10px">
   <h4 class="text-center text-primary">Search</h4><br>
-  <div class="submit-form ">
-    <div class="form-group form-inline row">
-      <!-- <label for="searchString" class = "col-form-label col-sm-2">Search String</label> -->
-      <div class="col-sm-8">
+  <div>
+    <div class="d-flex">
         <input
           type="text"
           class="form-control"
@@ -14,14 +12,10 @@
           name="searchString"
           placeholder="What would you like to search for?"
         />
-      </div>
-      <div class="col-sm-4">
-        <div class="float-end">
-          <button (click)="search()" class="btn btn-primary ">Match</button> &nbsp;
-          <button (click)="highlight()" class="btn btn-primary">Highlight</button> &nbsp;
-          <button (click)="searchLike()" class="btn btn-primary">Like</button>
-        </div>
-      </div>
+        <button (click)="search()" class="btn btn-primary" style="margin-left: 10px">Match</button>
+        <button (click)="highlight()" class="btn btn-primary" style="margin-left: 10px">Highlight</button>
+        <button (click)="searchLike()" class="btn btn-primary"style="margin-left: 10px">Like</button>
+        <button (click)="viewsql()" class="btn btn-secondary"style="margin-left: 10px">SQL</button>
     </div>
   </div> <br>
   <div *ngIf="tablerows.length === 0" [innerHtml]="resultString" class="row border-secondary border" style="width: 98vw;margin: 2px;height: 70vh; overflow-y: auto;">

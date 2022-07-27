@@ -18,13 +18,6 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  /*
-  this.singlestore.exec({sql: "create database mytestdb123"}).subscribe((response:SinglestoreExecResponse) => {
-    this.resultString = "Last Inserted:" +  response.lastInsertId.toString() + " Rows Affected:" + response.rowsAffected.toString();
-  },error => {
-    this.resultString = error.error;
-  });
-  */
 
   search() {
     if(this.searchString.length > 0){
@@ -36,14 +29,7 @@ export class SearchComponent implements OnInit {
                                   ).subscribe((response:SinglestoreTuppleResponse) => {
         this.parseData(response);
       },error => {
-        if(typeof error.error === "string"){
-          this.resultString = error.error;
-        } else if(typeof error.message ==="string") {
-          this.resultString = error.message;
-        } else{
-          this.resultString = "Undefined error!!! Check browser console for more information.";
-          console.log(error);
-        }
+        this.parseError(error);
       });
     } else {
       this.resultString = "";
@@ -60,14 +46,7 @@ export class SearchComponent implements OnInit {
                                                }).subscribe((response:SinglestoreTuppleResponse) => {
         this.parseData(response);
       },error => {
-        if(typeof error.error === "string"){
-          this.resultString = error.error;
-        } else if(typeof error.message ==="string") {
-          this.resultString = error.message;
-        } else{
-          this.resultString = "Undefined error!!! Check browser console for more information.";
-          console.log(error);
-        }
+        this.parseError(error);
       });
     } else {
       this.resultString = "";
@@ -84,14 +63,7 @@ export class SearchComponent implements OnInit {
                                                }).subscribe((response:SinglestoreTuppleResponse) => {
         this.parseData(response);
       },error => {
-        if(typeof error.error === "string"){
-          this.resultString = error.error;
-        } else if(typeof error.message ==="string") {
-          this.resultString = error.message;
-        } else{
-          this.resultString = "Undefined error!!! Check browser console for more information.";
-          console.log(error);
-        }
+        this.parseError(error);
       });
     } else {
       this.resultString = "";
@@ -114,7 +86,22 @@ export class SearchComponent implements OnInit {
     if(this.tablerows.length < 1){
       this.resultString = "No results found."
     }
+  }
+  parseError(error?:any){
+    if(typeof error.error === "string"){
+      this.resultString = error.error;
+    } else if(typeof error.message ==="string") {
+      this.resultString = error.message;
+    } else{
+      this.resultString = "Undefined error!!! Check browser console for more information.";
+      console.log(error);
+    }
+  }
 
+  viewsql() {
+    this.resultString = "<p><b>Match: </b><code>".concat(this.queryInfo.getSearchStr(),
+                        "</code><BR><BR><b>Highlight: </b><code>", this.queryInfo.getHighlightStr(),
+                        "</code><BR><BR><b>Like: </b><code>", this.queryInfo.getLikeStr(),"</code></p>");
   }
 
   pretty(data: any) {
@@ -123,5 +110,6 @@ export class SearchComponent implements OnInit {
     }
     return data;
   }
+
 }
 

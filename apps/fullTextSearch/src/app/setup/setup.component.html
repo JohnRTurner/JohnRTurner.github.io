@@ -163,11 +163,38 @@
   <br>
 
 
-  <div *ngIf="progress" class="text-center text-primary row">
-       <div class="text-end col-2">{{progress + '%'}} Loaded</div>
+  <div *ngIf="batchprog && batchprog.progress">
+    <div class="text-center text-primary row">
+       <div class="text-end col-2">{{batchprog.progress + '%'}} Loaded</div>
        <div class="progress bg-secondary progress-bar col-8" style="padding: 0">
          <div class="progress progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar"
-              [style]="'width: ' + progress + '%;'"></div>
+              [style]="'width: ' + batchprog.progress + '%;'"></div>
        </div>
+    </div>
+    <br>
+    <table class="table table-striped table-bordered table-primary table-responsive " style="max-width: 350px;margin-left: auto; margin-right: auto;">
+      <thead><tr>
+        <th colspan="2" class="text-center">Load Statistics</th>
+      </tr>
+      </thead>
+      <tbody class="text-end">
+        <tr>
+          <td class="text-start">Rows Loaded</td>
+          <td>{{batchprog.rows|number:'1.0-0'}}</td>
+        </tr>
+        <tr>
+          <td class="text-start">Rows/Second</td>
+          <td>{{batchprog.rowspersecond|number:'1.0-0'}}</td>
+        </tr>
+        <tr>
+          <td class="text-start">Second to Load</td>
+          <td>{{batchprog.seconds|number:'1.0-0'}}</td>
+        </tr>
+        <tr>
+          <td class="text-start">Second Since Update</td>
+          <td>{{batchprog.secondssinceupdate|number:'1.0-0'}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

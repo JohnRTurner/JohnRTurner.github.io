@@ -7,10 +7,23 @@
       <ul class = "list-group">
         <li class="list-group-item list-group-item-primary">
           <a href = "https://github.com/JohnRTurner/JohnRTurner.github.io#readme" target="_blank">Setup and Code</a>&nbsp;
-          to see how to create a database and setup a table for this demo.
+          explains how to create a SingleStoreDB Cloud for this demo.
         </li>
         <li class="list-group-item list-group-item-light">
-          Go to the <b>Setup</b> Tab, key in the fields, then press the "test and save" button.
+          <ul>
+            <li>Go to the <b>Setup</b> Tab, key in Database URL, UserName and Password fields.</li>
+              <ul>
+                <li>Optionally you can change the database name.</li>
+                <li>Please leave the table name and column name as defaulted, unless you are planning to load and use your own data.</li>
+              </ul>
+            <li>Press the <b>Test and Save</b> button.  If the details were entered correctly and the database is running, it will display "Connection successful and settings are saved."</li>
+            <li>If the table does not exist it will have a <b>Create All</b> button, which will require the following steps.</li>
+              <ul>
+                <li>Press the <b>Create All</b> button an it will create the database (if not present), the table, and a pipeline to load the table.</li>
+                <li>Please be patient. Within a minute a status bar for the data load will appear.</li>
+                <li>Searching on partial loads will work, but some results will be missing until it reaches 100%.</li>
+              </ul>
+          </ul>
         </li>
         <li class="list-group-item list-group-item-primary">
           Go to the <b>Search</b> Tab and test the searching.<br>

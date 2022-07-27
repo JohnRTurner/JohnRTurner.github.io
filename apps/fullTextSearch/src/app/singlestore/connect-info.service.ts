@@ -5,9 +5,9 @@ import {HttpHeaders} from "@angular/common/http";
   providedIn: 'root'
 })
 export class ConnectInfoService {
-  private singlestoreUrl = 'https://svc-322a7cb4-02ec-4cd2-b9e7-7c091669dcd7-dml.aws-virginia-3.svc.singlestore.com';
+  private singlestoreUrl = 'https://svc-0379b673-486a-4fa9-bb6f-d51a9ba9be1a-dml.aws-oregon-2.svc.singlestore.com';
   private singlestoreUser = 'admin';
-  private singlestorePass = 'S1ngleSt0r31';
+  private singlestorePass = '';
   private singlestoreOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
