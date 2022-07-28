@@ -99,6 +99,7 @@ export class SearchComponent implements OnInit {
   }
 
   viewsql() {
+    this.tablerows = [];
     this.resultString = "<p><b>Match: </b><code>".concat(this.queryInfo.getSearchStr(),
                         "</code><BR><BR><b>Highlight: </b><code>", this.queryInfo.getHighlightStr(),
                         "</code><BR><BR><b>Like: </b><code>", this.queryInfo.getLikeStr(),"</code></p>");
