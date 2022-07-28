@@ -230,7 +230,7 @@ export class SetupComponent implements OnInit, OnDestroy {
   }
 
   private sleepPipelineStarting(){
-    this.singlestore.exec({ sql: "SELECT SLEEP(60)"}).subscribe( (data) =>{
+    this.singlestore.exec({ sql: "SELECT SLEEP(15)"}).subscribe( (data) =>{
       this.resultString = this.resultString + "";
      this.pipelineStatus();
      this.updatable = true;
